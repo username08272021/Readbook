@@ -1,4 +1,4 @@
-#video-background {
+#video-background { 
     position: fixed;
     top: 0;
     left: 0;
@@ -111,3 +111,83 @@ body {
     transform: rotateY(-180deg);
     z-index: 5; /* Bring the flipped page to the top */
   }
+:root {
+  --base-font-size: 16px; /* Default, will be updated by JS */
+}
+
+body {
+  font-size: var(--base-font-size);
+  line-height: 1.5;
+}
+
+/* All your text elements should use relative units */
+h1 {
+  font-size: 2rem;
+}
+
+p, li, a {
+  font-size: 1rem;
+}
+
+/* Navigation buttons */
+#prev, #next {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 1.5rem;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 100;
+  font-size: 2rem;
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#prev {
+  left: 1rem;
+}
+
+#next {
+  right: 1rem;
+}
+
+/* Page styling */
+.page {
+  transition: transform 0.3s ease;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.page.flipped {
+  transform: rotateY(180deg);
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  #prev, #next {
+    width: 5rem;
+    height: 5rem;
+  }
+  
+  .page {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --base-font-size: 14px !important; /* Force slightly larger minimum */
+  }
+  
+  #prev, #next {
+    width: 4rem;
+    height: 4rem;
+    padding: 1rem;
+  }
+}
