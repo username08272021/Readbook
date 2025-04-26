@@ -1,78 +1,44 @@
-// Update your existing JavaScript with this improved version
 const prevButton = document.getElementById('prev');
 const nextButton = document.getElementById('next');
 const pages = document.querySelectorAll('.page');
 let currentPage = 0;
-let touchStartX = 0;
-let isSwiping = false;
 
-function showPage(index) {
-  // First reset all pages
-  pages.forEach((page, i) => {
-    if (i < index) {
-      page.classList.add('flipped');
-    } else {
-      page.classList.remove('flipped');
-    }
-  });
-  currentPage = index;
-  updateButtons();
-}
-
+// Your original flip functions - unchanged
 function flipNext() {
   if (currentPage < pages.length - 1) {
-    showPage(currentPage + 1);
+    pages[currentPage].classList.add('flipped');
+    currentPage++;
   }
 }
 
 function flipPrev() {
   if (currentPage > 0) {
-    showPage(currentPage - 1);
+    currentPage--;
+    pages[currentPage].classList.remove('flipped');
   }
 }
 
-function updateButtons() {
-  prevButton.style.visibility = currentPage > 0 ? 'visible' : 'hidden';
-  nextButton.style.visibility = currentPage < pages.length - 1 ? 'visible' : 'hidden';
-}
-
-// Touch handling with debounce
-document.addEventListener('touchstart', (e) => {
-  if (isSwiping) return;
-  touchStartX = e.touches[0].clientX;
-  isSwiping = true;
-}, { passive: true });
-
-document.addEventListener('touchmove', (e) => {
-  if (!isSwiping) return;
-  e.preventDefault(); // Prevent page scroll during swipe
-}, { passive: false });
-
-document.addEventListener('touchend', (e) => {
-  if (!isSwiping) return;
-  
-  const touchEndX = e.changedTouches[0].clientX;
-  const swipeThreshold = 50;
-  const swipeDistance = touchStartX - touchEndX;
-  
-  // Only allow one page turn per swipe
-  if (swipeDistance > swipeThreshold) {
-    flipNext();
-  } else if (swipeDistance < -swipeThreshold) {
-    flipPrev();
-  }
-  
-  isSwiping = false;
-}, { passive: true });
-
-// Keep your existing button and keyboard events
+// Your original button events - unchanged
 nextButton.addEventListener('click', flipNext);
 prevButton.addEventListener('click', flipPrev);
 
+// Your original keyboard support - unchanged
 document.addEventListener('keydown', (event) => {
   if (event.key === 'ArrowRight') flipNext();
-  if (event.key === 'ArrowLeft') flipPrev();
+  else if (event.key === 'ArrowLeft') flipPrev();
 });
 
-// Initialize
-showPage(0);
+// New simple swipe support - won't affect fonts
+let touchStartX = 0;
+
+document.addEventListener('touchstart', (e) => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+
+document.addEventListener('touchend', (e) => {
+  const touchEndX = e.changedTouches[0].clientX;
+  const threshold = 50;
+  
+  if (touchStartX - touchEndX > threshold) flipNext();
+  else if (touchEndX - touchStartX > threshold) flipPrev();
+}, { passive: true });
