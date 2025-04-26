@@ -24,20 +24,29 @@ body {
   z-index: 1
   }
 
-.page.chapter-1 p{
-    font-size: 12px;
+/* Replace your current chapter font sizes with this: */
+.page.chapter-1 p {
+  font-size: 12px !important;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
 }
 
-.page.chapter-2 p{
-    font-size: 10.5px;
+.page.chapter-2 p {
+  font-size: 10.5px !important;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
 }
 
-.page.chapter-3 p{
-    font-size: xx-small;
+.page.chapter-3 p {
+  font-size: xx-small !important;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
 }
 
-.page.chapter-4 p{
-    font-size: 10.5px;
+.page.chapter-4 p {
+  font-size: 10.5px !important;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
 }
 
 
