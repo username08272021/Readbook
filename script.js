@@ -1,68 +1,78 @@
+// Update your existing JavaScript with this improved version
 const prevButton = document.getElementById('prev');
 const nextButton = document.getElementById('next');
 const pages = document.querySelectorAll('.page');
 let currentPage = 0;
 let touchStartX = 0;
-let touchEndX = 0;
+let isSwiping = false;
 
-// Function to update button visibility
+function showPage(index) {
+  // First reset all pages
+  pages.forEach((page, i) => {
+    if (i < index) {
+      page.classList.add('flipped');
+    } else {
+      page.classList.remove('flipped');
+    }
+  });
+  currentPage = index;
+  updateButtons();
+}
+
+function flipNext() {
+  if (currentPage < pages.length - 1) {
+    showPage(currentPage + 1);
+  }
+}
+
+function flipPrev() {
+  if (currentPage > 0) {
+    showPage(currentPage - 1);
+  }
+}
+
 function updateButtons() {
   prevButton.style.visibility = currentPage > 0 ? 'visible' : 'hidden';
   nextButton.style.visibility = currentPage < pages.length - 1 ? 'visible' : 'hidden';
 }
 
-// Function to flip to the next page
-function flipNext() {
-  if (currentPage < pages.length - 1) {
-    pages[currentPage].classList.add('flipped');
-    currentPage++;
-    updateButtons();
-  }
-}
+// Touch handling with debounce
+document.addEventListener('touchstart', (e) => {
+  if (isSwiping) return;
+  touchStartX = e.touches[0].clientX;
+  isSwiping = true;
+}, { passive: true });
 
-// Function to flip to the previous page
-function flipPrev() {
-  if (currentPage > 0) {
-    currentPage--;
-    pages[currentPage].classList.remove('flipped');
-    updateButtons();
-  }
-}
+document.addEventListener('touchmove', (e) => {
+  if (!isSwiping) return;
+  e.preventDefault(); // Prevent page scroll during swipe
+}, { passive: false });
 
-// Event listeners for buttons
+document.addEventListener('touchend', (e) => {
+  if (!isSwiping) return;
+  
+  const touchEndX = e.changedTouches[0].clientX;
+  const swipeThreshold = 50;
+  const swipeDistance = touchStartX - touchEndX;
+  
+  // Only allow one page turn per swipe
+  if (swipeDistance > swipeThreshold) {
+    flipNext();
+  } else if (swipeDistance < -swipeThreshold) {
+    flipPrev();
+  }
+  
+  isSwiping = false;
+}, { passive: true });
+
+// Keep your existing button and keyboard events
 nextButton.addEventListener('click', flipNext);
 prevButton.addEventListener('click', flipPrev);
 
-// Touch event handlers for mobile swipe
-document.addEventListener('touchstart', (e) => {
-  touchStartX = e.changedTouches[0].screenX;
-});
-
-document.addEventListener('touchend', (e) => {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
-});
-
-function handleSwipe() {
-  const swipeThreshold = 50; // Minimum swipe distance in pixels
-  
-  if (touchStartX - touchEndX > swipeThreshold) {
-    // Swipe left - next page
-    flipNext();
-  } else if (touchEndX - touchStartX > swipeThreshold) {
-    // Swipe right - previous page
-    flipPrev();
-  }
-}
-
-// Keyboard support for desktop
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'ArrowRight') {
-    flipNext();
-  } else if (event.key === 'ArrowLeft') {
-    flipPrev();
-  }
+  if (event.key === 'ArrowRight') flipNext();
+  if (event.key === 'ArrowLeft') flipPrev();
 });
 
-// Initialize button visibility
-updateButtons();
+// Initialize
+showPage(0);
