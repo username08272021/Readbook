@@ -112,12 +112,6 @@ body {
     z-index: 5; /* Bring the flipped page to the top */
   }
 
-/* Add these without changing anything else */
-.page {
-  touch-action: pan-y; /* Allows vertical scrolling */
-  user-select: none; /* Prevents text selection during swipes */
-}
-
-.controls button {
-  min-width: 80px; /* Better touch targets */
-}
+/* Only these additions - won't affect fonts */
+.page { touch-action: pan-y; } /* Allows vertical scrolling */
+.controls button { min-width: 80px; } /* Better touch targets */
