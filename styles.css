@@ -187,6 +187,16 @@ p, li, a {
   
   #prev, #next {
     width: 4rem;
+
+/* Add this to your existing CSS */
+.page {
+  touch-action: pan-y; /* Allows vertical scrolling while preventing horizontal scroll */
+  user-select: none; /* Prevents text selection during swipes */
+}
+
+.book {
+  overflow: hidden; /* Contains the pages properly */
+}
     height: 4rem;
     padding: 1rem;
   }
