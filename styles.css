@@ -112,14 +112,12 @@ body {
     z-index: 5; /* Bring the flipped page to the top */
   }
 
-/* Prevent text selection during swipes */
+/* Add these without changing anything else */
 .page {
-  user-select: none;
-  -webkit-user-select: none;
+  touch-action: pan-y; /* Allows vertical scrolling */
+  user-select: none; /* Prevents text selection during swipes */
 }
 
-/* Make sure buttons are tappable on mobile */
 .controls button {
-  min-width: 80px;
-  padding: 12px;
+  min-width: 80px; /* Better touch targets */
 }
